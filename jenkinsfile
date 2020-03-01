@@ -1,9 +1,24 @@
 pipeline {
     agent { label 'dev' }
     stages {
-        stage('Build') { 
+        stage('Branch Checkout') {
             steps {
-                sh 'node --version'
+                git branch: '7.0.0', url: 'https://github.com/yuliiaanhurets/nest.git'
+                sh 'git status'
+            }
+        }
+        stage('Project Install') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+        stage('Project Build') { 
+            steps {
+                sh 'npm run build'
+            }
+        stage('Project Test') {
+            steps {
+                sh 'npm run test'
             }
         }
     }
